@@ -1,0 +1,39 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores e IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+*.sublime-*
+
+# Logs y temporales
+*.log
+tmp/
+.tmp/
+*.bak
+*.old
+
+# Carpetas de drafts y trabajo en curso
+casos-de-uso/.draft/
+prototipo/.draft/
+
+# Configuración local de Claude (settings personales por máquina)
+.claude/settings.local.json
+.claude/cache/
+.claude/logs/
+
+# Si en algún momento se experimenta con build tools (no recomendado para V1)
+node_modules/
+.parcel-cache/
+dist/
+build/
+
+# Archivos que se generan al abrir HTML en algunos navegadores
+*.html.bak

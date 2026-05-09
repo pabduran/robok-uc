@@ -1,101 +1,152 @@
-# ROBOK — Documentación extra (preparación para casos de uso y prototipo HTML)
+# ROBOK — Repo de visión y diseño
 
-> **Para qué sirve esto:** ROBOK v5 ya tiene los journeys del Dev Lead bien armados (Etapas 1-5 + principios). Faltan piezas intermedias entre "el journey" y "el prototipo HTML": personas, glosario, inventario de pantallas, componentes UI, y la guía para extraer casos de uso. Estos cinco docs cubren ese hueco.
->
-> **Estado:** drafts iniciales pensados para iterar. No reemplazan ROBOK v5 — lo complementan.
->
-> **Próximo paso:** otro agente (o vos en otra sesión) usa el 05-guia-casos-de-uso.md como guion para escribir los casos de uso. Después de los casos de uso, viene el prototipo HTML.
+> Laboratorio de diseño para **ROBOK v5** — la plataforma de desarrollo asistida por IA que se describe en `ROBOK_v5.md`. Acá viven los docs base, las skills para Claude Code, y (próximamente) los casos de uso y el prototipo HTML.
 
 ---
 
-## Los cinco documentos
+## Qué es este repo
 
-### 📄 [01 — Personas y arquetipos](./01-personas-y-arquetipos.md)
-Define a Vera (Dev Lead), Diego (Developer), Marisol (Admin de ROBOK) y Pablo (Stakeholder externo). Cada uno con motivaciones, frustraciones, comportamiento esperado y frase canónica. Sin esto, los casos de uso quedan en "el usuario hace X".
+Este repo NO es código. Es un repo de **diseño y especificación** que sirve para:
 
-### 📄 [02 — Glosario y modelo conceptual](./02-glosario-y-modelo-conceptual.md)
-Términos canónicos del producto. Reglas de naming en pantalla. Anti-glosario (qué NO decir). Diagrama ER del modelo conceptual. Sin esto, los casos de uso van a inventar 5 nombres distintos para "el plan".
+1. Madurar la visión de ROBOK antes de implementarla.
+2. Producir casos de uso bien formados desde los journeys.
+3. Construir un prototipo HTML estático para validar el flujo visualmente (estilo Figma pero en HTML, listo para reutilizar después).
+4. Mantener consistencia entre sesiones de Claude Code mediante skills personalizadas.
 
-### 📄 [03 — Inventario de pantallas](./03-inventario-pantallas.md)
-Las 18 pantallas que existen en V1, agrupadas en 8 bloques (Acceso, Onboarding, Hub, Selección, Análisis, Squad, Pre-merge Gate, Admin). Cada pantalla con: quién entra, qué muestra, estados, salida. Mapa global de navegación. Priorización para el prototipo en 4 pasadas.
-
-### 📄 [04 — Componentes UI](./04-componentes-ui.md)
-Los 15 componentes que aparecen en múltiples pantallas: Header con badge ambient, Card de ticket, Pill de modo, Card de agente, Status Bar, Timeline editorial, Avatar del muro, Mapa de componentes, etc. Cada uno con anatomía visual ASCII, estados, comportamiento. Stack sugerido para el prototipo (HTML + Tailwind, sin build step).
-
-### 📄 [05 — Guía para construir casos de uso](./05-guia-casos-de-uso.md)
-**Es el "puente" hacia el siguiente paso.** Define qué es un caso de uso en ROBOK, granularidad correcta, plantilla recomendada, lista de los 35 casos de uso esperados, anti-patrones a evitar. El próximo agente lee este doc y escribe los casos de uso siguiendo el patrón.
+**Repo separado del código.** El repo de código del MVP actual (agente de Slack para registro arquitectónico, hexagonal pragmático) vive aparte. Esa decisión es deliberada — protege contra contaminar el código existente con ideas todavía en validación, y protege al diseño de las restricciones del código existente. Cuando converjan, será con evidencia.
 
 ---
 
-## Orden de lectura
+## Estructura del repo
 
-**Si sos el agente que va a construir los casos de uso:**
-
-1. Leé `ROBOK_v5.md` completo (la fuente de verdad funcional).
-2. Leé los docs 01, 02, 03, 04 en ese orden.
-3. Usá el doc 05 como guion de trabajo.
-4. Empezá por los casos de uso de Etapas 4 y 3 (los más impactantes para el prototipo).
-
-**Si sos el agente que va a construir el prototipo HTML:**
-
-1. Asegurate de que ya existan los casos de uso (paso anterior).
-2. Leé el doc 03 (inventario de pantallas) y el doc 04 (componentes).
-3. Empezá por la Pasada 1 del prototipo: pantalla F1 (Squad activo), E3 (Muro de discusión), B3 (Insight inicial).
-4. Cada pantalla = un archivo `.html`. Estados como variantes (ej. `f1-squad-trabajando.html`, `f1-squad-esperando.html`).
-
----
-
-## Principios que estos docs respetan
-
-Los cinco documentos son intencionalmente **anti-sobreingeniería**:
-
-- **Solo lo que está en ROBOK v5 + lo que necesitan los casos de uso.** No se inventaron features nuevas.
-- **18 pantallas, 15 componentes, 35 casos de uso.** Números acotados que cubren el producto V1 sin pretender resolver el universo.
-- **Stack del prototipo: HTML + Tailwind + emojis.** Sin frameworks pesados, sin backend.
-- **No hay vistas mobile, no hay real-time collaboration, no hay embed Slack.** Esas son features V2.
-- **Los gates humanos son no-negociables** (P3 de ROBOK v5) — los casos de uso van a reflejarlo, los componentes UI ya lo materializan (modal de checkpoint bloqueante, etc).
+```
+.
+├── README.md                          ← este archivo
+├── CLAUDE.md                          ← instrucciones para Claude Code en cada sesión
+├── ROBOK_v5.md                        ← fuente de verdad funcional (los journeys)
+│
+├── 01-personas-y-arquetipos.md        ← Vera, Diego, Marisol, Pablo
+├── 02-glosario-y-modelo-conceptual.md ← términos canónicos + anti-glosario
+├── 03-inventario-pantallas.md         ← las 18 pantallas de V1
+├── 04-componentes-ui.md               ← los 15 componentes UI
+├── 05-guia-casos-de-uso.md            ← plantilla y guion para los 35 CU
+│
+├── .claude/
+│   └── skills/                        ← skills personalizadas para Claude Code
+│       ├── robok-casos-de-uso/SKILL.md
+│       ├── robok-prototipo-html/SKILL.md
+│       └── robok-glosario-guard/SKILL.md
+│
+├── casos-de-uso/                      ← (vacío por ahora) los 35 CU van acá
+│
+└── prototipo/                         ← (vacío por ahora) las pantallas HTML van acá
+```
 
 ---
 
-## Lo que estos docs intencionalmente NO cubren
+## Estado actual
 
-Cosas que SÍ son importantes pero que viven en otra parte del proyecto:
-
-- **Arquitectura técnica del backend** → vive en `Arquitectura_desacoplada.md`, `c4-containers.md`, `c4-components.md`, `2026-05-06-clean-architecture-design.md`.
-- **MVP actual de Slack (registro arquitectónico)** → es un alcance distinto, vive en `spec.md`, `README.md` y los archivos de design 2026-05-07.
-- **Implementación de squads, agentes, runtime de IA** → eso lo cubren las capacidades fundacionales y la arquitectura desacoplada.
-- **Pricing y monetización** → fuera de scope de estos docs.
-- **Estrategia de go-to-market** → fuera de scope.
+| Bloque | Estado |
+|---|---|
+| `ROBOK_v5.md` (visión y journeys) | ✅ Estable |
+| Docs base 01–05 | ✅ Drafts iniciales, listos para iterar |
+| Skills para Claude Code | ✅ Instaladas en `.claude/skills/` |
+| Casos de uso (35 esperados) | ⏳ Pendientes |
+| Prototipo HTML (18 pantallas) | ⏳ Pendiente |
+| Validación con usuarios reales | ⏳ Pendiente |
 
 ---
 
-## Si volviste y querés seguir
+## Los cinco documentos base
 
-Próximas sesiones recomendadas, en orden:
+| Doc | Para qué sirve |
+|---|---|
+| **[01 — Personas y arquetipos](./01-personas-y-arquetipos.md)** | Define a Vera (Dev Lead), Diego (Developer), Marisol (Admin de ROBOK) y Pablo (Stakeholder externo). Sin esto, los casos de uso quedan en "el usuario hace X". |
+| **[02 — Glosario y modelo conceptual](./02-glosario-y-modelo-conceptual.md)** | Términos canónicos. Anti-glosario. Reglas de naming en pantalla. Diagrama ER. |
+| **[03 — Inventario de pantallas](./03-inventario-pantallas.md)** | Las 18 pantallas que existen en V1. Mapa de navegación. Priorización para el prototipo en 4 pasadas. |
+| **[04 — Componentes UI](./04-componentes-ui.md)** | Los 15 componentes con anatomía visual, estados, comportamiento. Stack del prototipo (HTML + Tailwind CDN). |
+| **[05 — Guía para construir casos de uso](./05-guia-casos-de-uso.md)** | Plantilla de CU + lista de los 35 esperados + anti-patrones. Es el guion de trabajo. |
 
-**Sesión 2 — Casos de uso (próximo paso obvio)**
-- Pedir: "Tengo los docs 01-05. Ahora escribime los 35 casos de uso siguiendo la guía del doc 05. Empezá por las Etapas 4 y 3."
-- Salida esperada: 35 casos de uso en el formato de la plantilla.
+---
 
-**Sesión 3 — Validación de casos de uso**
-- Pedir: "Revisá los casos de uso contra los principios de ROBOK v5 y los anti-patrones del doc 05. Marcá lo que esté mal."
-- Salida esperada: lista de correcciones.
+## Las tres skills de Claude Code
 
-**Sesión 4 — Prototipo HTML, Pasada 1**
-- Pedir: "Construime las pantallas F1, E3, B3 en HTML + Tailwind, con sus estados. Datos hardcodeados. Una pantalla por archivo."
-- Salida esperada: 3 archivos `.html` (más sus variantes de estado) navegables entre sí.
+Las skills viven en `.claude/skills/` y se commitean junto al repo. Claude Code las detecta automáticamente cuando el pedido coincide con sus triggers.
 
-**Sesión 5 — Prototipo HTML, Pasadas 2-4**
-- Iterativas, una pasada por sesión si querés ir despacio o todo de una si querés acelerar.
+| Skill | Trigger | Qué hace |
+|---|---|---|
+| **robok-casos-de-uso** | Pedir escribir/revisar/modificar casos de uso | Aplica la plantilla del doc 05, valida contra glosario y inventario, evita anti-patrones |
+| **robok-prototipo-html** | Pedir construir/modificar pantallas HTML | Fija stack (HTML + Tailwind CDN), una pantalla = un archivo, datos mock consistentes |
+| **robok-glosario-guard** | Cualquier escritura de docs ROBOK | Guardián transversal contra deriva semántica entre sesiones |
+
+---
+
+## Cómo trabajar acá
+
+### Si vas a escribir casos de uso
+
+1. Leé `ROBOK_v5.md` completo.
+2. Leé los docs 01 → 02 → 03 → 04 en ese orden.
+3. Usá el doc 05 como guion.
+4. **Escribí los CU en orden cronológico** (Etapa 1 → 2 → 3 → 4 → 5 → vistas auxiliares). Esto evita inconsistencias porque cada CU se apoya en el contexto del anterior.
+5. Un archivo por CU en `casos-de-uso/CU-XX-titulo-corto.md`. Mantené un `casos-de-uso/00-indice.md` como tabla resumen.
+
+### Si vas a construir el prototipo HTML
+
+1. Asegurate de que ya existan los casos de uso de las pantallas que vas a hacer.
+2. Leé el doc 03 (inventario) y el doc 04 (componentes).
+3. **Construí en orden de impacto demostrativo** (Pasada 1: F1 Squad activo, E3 Muro, B3 Insight). Esto SÍ aplica acá — el prototipo se muestra, los CU se leen secuencialmente.
+4. Stack: HTML + Tailwind CDN, una pantalla por archivo, datos hardcodeados, desktop-first. Sin React, sin build step, sin backend.
+
+### Si encontrás un hueco en los docs base
+
+- **Pantalla nueva que necesitás** → primero agregala al doc 03, después la usás.
+- **Término nuevo** → primero al doc 02 (glosario), después lo usás.
+- **Componente UI nuevo** → primero al doc 04, después lo construís.
+
+La fricción es deliberada — protege contra deriva e invenciones inconsistentes entre sesiones.
+
+---
+
+## Próximas sesiones recomendadas
+
+| Sesión | Qué hacer | Salida esperada |
+|---|---|---|
+| **2 — CU Etapa 1+2** | Escribir CU-01 a CU-11 (acceso, onboarding, selección de sprint) | 11 archivos + índice |
+| **3 — CU Etapa 3** | Escribir CU-12 a CU-19 (análisis profundo, muro, plan) | 8 archivos |
+| **4 — CU Etapa 4** | Escribir CU-20 a CU-27 (squad activo, drill-down, checkpoints) | 8 archivos |
+| **5 — CU Etapa 5 + auxiliares** | Escribir CU-28 a CU-35 | 8 archivos |
+| **6 — Validación de CU** | Auditar los 35 CU contra principios y anti-patrones | Lista de correcciones |
+| **7 — Prototipo Pasada 1** | F1 Squad + E3 Muro + B3 Insight con sus estados | ~10 archivos HTML |
+| **8 — Prototipo Pasada 2** | C1 Hub + D1 Backlog + F3 Checkpoint | ~6 archivos HTML |
+| **9–10 — Prototipo Pasadas 3-4** | Resto de las 18 pantallas | resto de HTML + index |
+
+---
+
+## Principios anti-sobreingeniería
+
+- **Solo lo que está en ROBOK v5 + lo necesario para los CU y el prototipo.** No se inventan features.
+- **Números acotados:** 18 pantallas, 15 componentes, 35 casos de uso. Cubre V1 sin pretender resolver el universo.
+- **No hay vistas mobile, ni real-time collab, ni embed Slack en V1.** Esas son features V2.
+- **Los gates humanos son no-negociables** (P3 de ROBOK v5). Los CU van a reflejarlo, los componentes UI ya lo materializan.
+- **Diseño para 12 meses, no para 5 años.**
+
+---
+
+## Lo que NO está acá (vive en otro lado)
+
+- **Código del MVP actual** (agente de Slack para registro arquitectónico) → repo separado.
+- **Arquitectura técnica del backend** (capacidades fundacionales, hexagonal, adapters) → docs en el otro repo.
+- **Pricing, monetización, GTM** → fuera del alcance de este repo.
 
 ---
 
 ## Notas de criterio
 
-Estos docs fueron generados de un tirón intencionalmente, para que cuando volvieras del paseo del perro tuvieras una base sólida sin esperar nada. Eso significa:
+Los docs base se generaron en una pasada inicial intencional para tener una base sólida sobre la cual iterar. Eso significa:
 
-- **Hay decisiones tomadas por mí** que conviene revisar: nombres exactos en el glosario, paleta de colores sugerida, granularidad de algunos casos de uso de la lista.
-- **Hay placeholders sensatos** donde había ambigüedad: el "Promise Engine" como producto ejemplo, "Vera" como Dev Lead canónica, etc. Cambiables si querés otra convención.
-- **Hay omisiones intencionales** donde sentí que entrar más era sobreingeniería: las pantallas H1 (admin) y C4 (configuración) están descritas a nivel funcional pero sin el detalle de las pantallas centrales — coherente con que no son el corazón del producto.
+- **Hay decisiones tomadas que conviene revisar al usar:** nombres exactos del glosario, paleta de colores sugerida, granularidad de algunos CU.
+- **Placeholders sensatos:** "Promise Engine" como producto ejemplo, "Vera" como Dev Lead canónica.
+- **Omisiones intencionales** donde más detalle era sobreingeniería temprana: pantallas H1 (admin) y C4 (configuración) descritas a nivel funcional sin el detalle de las pantallas centrales.
 
-Si algo no te calza al volver, todo es editable y los docs están pensados para iterar.
+Todo es editable. Los docs están pensados para iterar.
